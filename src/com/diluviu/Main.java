@@ -16,26 +16,10 @@ public class Main {
 		float mountIntRate = calculateMountInterestRate(annIntRate);
 		short totalNumberOfPayments = calculateTotalNumberOfPayments(period);
 		
-		double mortgage = calculateMortgage (principal, mountIntRate, totalNumberOfPayments); 
-		
-		System.out.println("\nMORTAGE\n--------\nMonthly Payments: " + NumberFormat.getCurrencyInstance().format(mortgage)+"\n");
-		System.out.println("PAYMENT SCHEDULE\n----------------");
-		for (short i = 1; i <= totalNumberOfPayments; i++) {
-			double remainingBalance = calculateRemainingBalance(principal, mountIntRate,totalNumberOfPayments, i);
-			System.out.println(NumberFormat.getCurrencyInstance().format(remainingBalance));
-		}
+		printMortgage(principal, mountIntRate, totalNumberOfPayments);
+		printBalance(principal, mountIntRate, totalNumberOfPayments);
 	}
-	
-	public static double calculateMortgage (int principal, 
-			float mountIntRate, 
-			short totalNumberOfPayments) {
 
-		double mortgage = principal * (mountIntRate * (Math.pow(1 + mountIntRate, totalNumberOfPayments))
-				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1));
-		
-		return mortgage; 
-	}
-	
 	public static double readNumber(String prompt, double min, double max) { 
 		Scanner scanner = new Scanner(System.in);
 		NumberFormat nf = NumberFormat.getInstance();
@@ -49,14 +33,7 @@ public class Main {
 			System.out.println("Enter a number between " + nf.format(min) + " and "+ nf.format(max));
 		}
 		return value;
-	}
-	
-	public static double calculateRemainingBalance(int principal, float mountIntRate, short totalNumberOfPayments, short numbOfMadePayments) {
-		double remainingBalance = principal * (Math.pow(1 + mountIntRate, totalNumberOfPayments) - (Math.pow(1 + mountIntRate, numbOfMadePayments))) 
-				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1);
-		
-		return remainingBalance;
-	} 
+	}	
 	
 	public static float calculateMountInterestRate(float annIntRate) {
 		final byte MONTHS_IN_YEAR = 12;
@@ -64,10 +41,50 @@ public class Main {
 		float mountIntRate = (float) (annIntRate / MONTHS_IN_YEAR / PERCENTS);
 		return mountIntRate;
 	}
+	
 	public static short calculateTotalNumberOfPayments(short years) {
 		final byte MONTHS_IN_YEAR = 12;
 		short totalNumberOfPayments = (short) (years * MONTHS_IN_YEAR);
 		return totalNumberOfPayments; 
+	}
+	
+	public static double calculateMortgage (int principal, 
+			float mountIntRate, 
+			short totalNumberOfPayments) {
+
+		double mortgage = principal 
+				* (mountIntRate * (Math.pow(1 + mountIntRate, totalNumberOfPayments))
+				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1));
+		
+		return mortgage; 
+	}
+	
+	public static void printMortgage(int principal, 
+			float mountIntRate, 
+			short totalNumberOfPayments) {
+		double mortgage = calculateMortgage (principal, mountIntRate, totalNumberOfPayments); 
+		System.out.println("\nMORTAGE\n--------\nMonthly Payments: " + NumberFormat.getCurrencyInstance().format(mortgage)+"\n");
+	}
+	
+	public static double calculateRemainingBalance(int principal, 
+			float mountIntRate, 
+			short totalNumberOfPayments, 
+			short numbOfMadePayments) {
+		double remainingBalance = principal
+				* (Math.pow(1 + mountIntRate, totalNumberOfPayments) - (Math.pow(1 + mountIntRate, numbOfMadePayments))) 
+				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1);
+		
+		return remainingBalance;
+	}
+	
+	public static void printBalance(int principal, 
+			float mountIntRate, 
+			short totalNumberOfPayments) {
+		System.out.println("PAYMENT SCHEDULE\n----------------");
+		for (short numbOfMadePayments = 1; numbOfMadePayments <= totalNumberOfPayments; numbOfMadePayments++) {
+			double remainingBalance = calculateRemainingBalance(principal, mountIntRate,totalNumberOfPayments, numbOfMadePayments);
+			System.out.println(NumberFormat.getCurrencyInstance().format(remainingBalance));
+		}
 	}
 	
 }
