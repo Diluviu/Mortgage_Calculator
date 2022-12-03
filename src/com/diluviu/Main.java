@@ -4,7 +4,6 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Main {
-
 	public static void main(String[] args) {
 		int principal;
 		float annIntRate;
@@ -14,23 +13,25 @@ public class Main {
 		annIntRate = (float) readNumber ("Annual Interest Rate: ", 1, 30);
 		period = (byte)  readNumber ("Period (Years): ", 1, 30);
 		
-		double mortgage =calculateMortgage (principal, annIntRate, period); 
+		float mountIntRate = calculateMountInterestRate(annIntRate);
+		short totalNumberOfPayments = calculateTotalNumberOfPayments(period);
 		
-		System.out.println("Mortgage: " + NumberFormat.getCurrencyInstance().format(mortgage));
+		double mortgage = calculateMortgage (principal, mountIntRate, totalNumberOfPayments); 
+		
+		System.out.println("\nMORTAGE\n--------\nMonthly Payments: " + NumberFormat.getCurrencyInstance().format(mortgage)+"\n");
+		System.out.println("PAYMENT SCHEDULE\n----------------");
+		for (short i = 1; i <= totalNumberOfPayments; i++) {
+			double remainingBalance = calculateRemainingBalance(principal, mountIntRate,totalNumberOfPayments, i);
+			System.out.println(NumberFormat.getCurrencyInstance().format(remainingBalance));
+		}
 	}
 	
 	public static double calculateMortgage (int principal, 
-			float annIntRate, 
-			byte years) {
+			float mountIntRate, 
+			short totalNumberOfPayments) {
 
-		final byte MONTHS_IN_YEAR = 12;
-		final byte PERCENTS = 100;
-		
-		float mountIntRate = annIntRate / MONTHS_IN_YEAR / PERCENTS;
-		short numOfPayments = (short) (years * MONTHS_IN_YEAR);
-
-		double mortgage = principal * (mountIntRate * (Math.pow(1 + mountIntRate, numOfPayments))
-				/ (Math.pow(1 + mountIntRate, numOfPayments) - 1));
+		double mortgage = principal * (mountIntRate * (Math.pow(1 + mountIntRate, totalNumberOfPayments))
+				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1));
 		
 		return mortgage; 
 	}
@@ -49,4 +50,24 @@ public class Main {
 		}
 		return value;
 	}
+	
+	public static double calculateRemainingBalance(int principal, float mountIntRate, short totalNumberOfPayments, short numbOfMadePayments) {
+		double remainingBalance = principal * (Math.pow(1 + mountIntRate, totalNumberOfPayments) - (Math.pow(1 + mountIntRate, numbOfMadePayments))) 
+				/ (Math.pow(1 + mountIntRate, totalNumberOfPayments) - 1);
+		
+		return remainingBalance;
+	} 
+	
+	public static float calculateMountInterestRate(float annIntRate) {
+		final byte MONTHS_IN_YEAR = 12;
+		final byte PERCENTS = 100;
+		float mountIntRate = (float) (annIntRate / MONTHS_IN_YEAR / PERCENTS);
+		return mountIntRate;
+	}
+	public static short calculateTotalNumberOfPayments(short years) {
+		final byte MONTHS_IN_YEAR = 12;
+		short totalNumberOfPayments = (short) (years * MONTHS_IN_YEAR);
+		return totalNumberOfPayments; 
+	}
+	
 }
