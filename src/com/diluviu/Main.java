@@ -43,7 +43,7 @@ public class Main {
 		
 		while (true) {
 			System.out.print(prompt);
-			value = scanner.nextInt();
+			value = scanner.nextDouble();
 			if (value >= min && value <= max)
 				break;
 			System.out.println("Enter a number between " + nf.format(min) + " and "+ nf.format(max));
