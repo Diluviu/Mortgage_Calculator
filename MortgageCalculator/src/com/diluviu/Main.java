@@ -17,8 +17,8 @@ public class Main {
 		double mortgage =calculateMortgage (principal, annIntRate, period); 
 		
 		System.out.println("Mortgage:" + NumberFormat.getCurrencyInstance().format(mortgage));
-		// 16:47:10
-		// 17:00
+		//nice and clean
+		// ad;flksd;lfksaldkflsakdf;lksadflksdlkf
 	}
 	
 	public static double calculateMortgage (int principal, 

@@ -18,6 +18,14 @@ public class Main {
 		
 		System.out.println("Mortgage: COMMITED2" + NumberFormat.getCurrencyInstance().format(mortgage));
 		//wwtttffff
+		//18:23
+		//18 29
+		
+		//18:43
+		//18 80 PC
+		// 19 35 PC
+		// 20 08 Alienware
+		//wwttf is going on ???
 	}
 	
 	public static double calculateMortgage (int principal, 
