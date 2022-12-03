@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author diluv
+ *
+ */
+module main {
+}
