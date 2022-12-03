@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author diluv
- *
- */
-module main {
-}
